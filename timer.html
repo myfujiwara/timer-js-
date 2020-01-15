@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="timer.css">
+    <title>3分カウントダウンタイマー</title>
+    <script>
+        //var timer = document.getElementById('timer');
+        //   var min = document.getElementById('min');
+        //   var sec = document.getElementById('sec');
+        
+           var intervalId;
+           var startFlag = false;
+           var startTime;
+           var timeLeft;
+           var timeToCountDown = 180;
+           
+    // 残り時間を出す
+       function updateTimer(){
+          var timer =document.getElementById('timer');
+          if (timeToCountDown === 1){
+              timer.textContent = 'Time UP!';
+              timer.className = 'red';
+          }else{
+          timeToCountDown--;
+          var m = Math.floor(timeToCountDown / 60);
+          var s = timeToCountDown % 60;
+          m = ('0' + m).slice(-2);
+          s = ('0' + s).slice(-2);
+          timer.textContent= m + ':' + s;
+          }
+       }
+       
+    //   スタートボタンで進む、二度押し防止
+       function countStart(){
+          if(startFlag === false){
+           intervalId = setInterval(updateTimer, 1000);
+           startFlag = true;
+           switchStart();
+         }
+          
+       }
+       function switchStart(){
+          if(start.disabled){
+        　  start.disabled = false;
+            return false;
+          }else{
+            start.disabled = true;
+            return true;
+          }
+           
+       }
+       
+    // ストップボタンで止まる
+       function countStop(){
+           clearInterval(intervalId);
+           startFlag = false;
+           switchStart();
+       }
+       
+    // リセットで3:00になる
+       function countReset(){
+           clearInterval(intervalId);
+           startFlag = false;
+           timeToCountDown = 180;
+           m = 0;
+           s = 0; 
+           var timer =document.getElementById('timer');
+           timer.className = '';
+           var reset =document.getElementById('timer');
+           reset.textContent = '03:00';
+           switchStart();
+       }
+    
+      window.onload = function(){
+          var start = document.getElementById('start');
+          start.addEventListener('click', countStart, false);
+          var stop = document.getElementById('stop');
+          stop.addEventListener('click', countStop, false);
+          var reset =document.getElementById('reset');
+          reset.addEventListener('click', countReset, false);
+      }
+    </script>
+    </head>
+    <body>
+        <div id="timer">03:00</div>
+        <button id="start">スタート</button>
+        <button id="stop">ストップ</button>
+        <button id="reset">リセット</button>
+    </body>
+</html>
